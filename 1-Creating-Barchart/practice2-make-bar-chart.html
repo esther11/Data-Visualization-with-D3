@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Making Barchart</title>
+	<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+	<style>
+		.chart rect{
+			fill: steelblue;
+		}
+		.chart text{
+			fill: white;
+			font: 10px sans-serif;
+			text-anchor: end;
+		}
+	</style>
+</head>
+<body>
+<p>
+	This practice introduces using SVG (HTML is largely limited to rectangular shapes).
+</p>
+<p>
+	SVG markup can be embeded directly in html file. SVG elements can be styled with CSS using different property names like <b>fill</b> instead of <b>background-color</b>. In SVG, geometry (such as the width of a rect element) must be specified as attributes, while aesthetics (such as a fill color) can be specified as styles. 
+</p>
+<p>
+	However, SVG elements must be positioned relative to the top-left corner of the container. You will need to hard-code translations relative to the origin.
+</p>
+
+<svg class="chart"></svg>
+
+<script type="text/javascript">
+// Make bar chart with SVG
+	var data = [4, 8, 15, 16, 23, 42];
+
+	var chartWidth = 420,
+		barHeight = 20;
+
+	// Scaling to fit
+	var x = d3.scaleLinear()
+		.domain([0, d3.max(data)])
+		.range([0, chartWidth]);
+
+	// Set the chart variable and specify the size
+	var chart = d3.select(".chart")
+		.attr("width", chartWidth)
+		.attr("height", barHeight * data.length);
+
+	// Create the g elements for bars with specified translated position 
+	var bar = chart.selectAll("g")
+		.data(data)
+	  .enter().append("g")
+	  	.attr("transform", function(d, i){ return "translate(0," + i * barHeight + ")"; });
+
+	// Create rectangles to show the bars
+	bar.append("rect")
+		.attr("width", x)  // x here is equivalent to function(d){ return x(d); }. Using no () means to fetch the function to be passed along as a callback. (Not excecuting the function and return its value)
+		.attr("height", barHeight - 1);
+
+	bar.append("text")
+		.attr("x", function(d){ return x(d) - 3; })  // x coordinate of the text, relative to its container g
+		.attr("y", barHeight / 2)  // y coordinate of the text, relative to its container g
+		.attr("dy", ".35em")
+		.text(function(d){ return d; });
+
+</script>
+</body>
+</html>

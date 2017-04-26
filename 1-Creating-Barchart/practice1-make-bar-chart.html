@@ -5,6 +5,9 @@
 	<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <body>
+<p>
+	This practice introduces basic usage of d3.js, including selection, joining data with DOM, method chaining, scale
+</p>
 <section></section>
 <section>
 	<div class="chart1"></div>
@@ -55,15 +58,15 @@
 
 	// Basic
 	d3.select(".chart1")
-	  .selectAll("div")
-	  	.data(data)  // join data with DOM elements. For now, the selection is empty, and the returned update and exit selections are also empty
+	  .selectAll("div")  // For now, the selection is empty
+	  	.data(data)  // join data with DOM elements. For now, since the selection is empty, the returned update and exit selections are also empty
 	  .enter().append("div")  // we need only handle the enter selection, instantiate missing elements by appending to the enter selection
 	  	.style("background-color", "yellow")
 	  	.style("text-align", "right")
 	  	.style("width", function(d){return d*10 + "px";})
 	  	.text(function(d){return d;});
 
-	// Barchart which width scale to fit
+	// Barchart which width scale to fit, you only need to determine the width of your chart (840 in this case).
 	// x is a function that returns the scaled display value in the range for a given data value in the domain.
 	var x = d3.scaleLinear()
 		.domain([0, d3.max(data)])
